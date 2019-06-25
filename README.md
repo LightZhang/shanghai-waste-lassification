@@ -10,3 +10,26 @@
 
 - [云开发文档](https://developers.weixin.qq.com/miniprogram/dev/wxcloud/basis/getting-started.html)
 
+## 目录介绍
+- web  微信小程序主要开发目录
+
+- cloudfunctions 云开发相关目录
+
+- project.config.json 配置相关js
+
+## 第一步
+
+- cd ./web
+
+- npm install
+
+- npm run build
+
+- npm run dev
+
+
+
+
+
+
+
