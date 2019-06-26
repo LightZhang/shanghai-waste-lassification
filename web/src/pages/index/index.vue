@@ -20,19 +20,8 @@
       <van-tag type="success" plain round v-for="hot in hots" :key="hot">{{hot}}</van-tag>
     </div>
 
-    <div class="result-box" v-if="isShowSeach">
-      <label class="seach-name">{{keyWord}}</label>
-      <div class="img-box"></div>
-      <div class="description"></div>
-    </div>
-
-    <swiper
-      class="banner"
-      :indicator-dots="indicatorDots"
-      :autoplay="autoplay"
-      :interval="interval"
-      :duration="duration"
-    >
+    <resultBox :name="resultObject.name"></resultBox>
+    <swiper v-if="!isShowSeach" class="banner" :indicator-dots="indicatorDots" :autoplay="autoplay" :interval="interval" :duration="duration">
       <block v-for="item in imgUrls" :key="item">
         <swiper-item>
           <image :src="item" style=" height: 500px;" class="slide-image" mode="scaleToFill"></image>
@@ -43,50 +32,50 @@
 </template>
 
 <script>
-import card from '@/components/card'
+import resultBox from "@/components/result-box";
 
 export default {
-  data () {
+  data() {
     return {
-      keyWord: "",
-
-      isShowSeach: false,
-      hots: ["纸巾", "面膜", "鸡蛋", "剩饭", "剩菜", "所料", "小龙虾", "玻璃瓶"],
-
+      isShowSeach: true,
+      hots: [
+        "纸巾",
+        "面膜",
+        "鸡蛋",
+        "剩饭",
+        "剩菜",
+        "所料",
+        "小龙虾",
+        "玻璃瓶"
+      ],
+      resultObject: {
+        name: "干垃圾"
+      },
       imgUrls: [
-        require('../../../static/images/可回收.png'),
-        require('../../../static/images/干垃圾.png'),
-        require('../../../static/images/湿垃圾.png'),
-        require('../../../static/images/有害垃圾.png'),
-
+        require("../../../static/images/ico-1.jpg"),
+        require("../../../static/images/ico-2.jpg"),
+        require("../../../static/images/ico-3.jpg"),
+        require("../../../static/images/ico-4.jpg")
       ],
       indicatorDots: false,
       autoplay: false,
       interval: 5000,
       duration: 1000
-
-    }
+    };
   },
 
   components: {
-    card
+    resultBox
   },
 
-  methods: {
-
-  },
-  created () {
+  methods: {},
+  created() {
     wx.hideTabBar();
-    wx.setNavigationBarTitle({ title: '查询' });
+    wx.setNavigationBarTitle({ title: "查询" });
     console.log(wx.cloud);
-
   },
-  mounted () {
-
-
-
-  }
-}
+  mounted() {}
+};
 </script>
 <style lang="less" scoped>
 .index {
@@ -109,6 +98,7 @@ export default {
       margin: 5px;
     }
   }
+
   .banner {
     height: 600px;
   }
