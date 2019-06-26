@@ -8,11 +8,12 @@
 		"minified": true,
 		"newFeature": true
 	},
-	"appid": "wx3e3a8229ae5d9b63",
+	"appid": "wx6f63f3a033247ba1",
 	"projectname": "test2",
 	"libVersion": "2.2.5",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
 	"condition": {
 		"search": {
 			"current": -1,
