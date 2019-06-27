@@ -5,7 +5,7 @@
     <div class="img-box">
       <cover-image :src="rubbishType.img" mode="scaleToFill" style="width:65px;"></cover-image>
     </div>
-    <div v-if="name=='干垃圾'" class="content">
+    <div class="content">
       <div class="stage">
         <label>{{rubbishType.name}}是指：</label>
         <p> {{rubbishType.concept}}</p>
@@ -24,11 +24,6 @@
       </div>
 
     </div>
-
-    <div v-else>
-      <h1>未查询到该垃圾种类</h1>
-    </div>
-
   </div>
 </template>
 
