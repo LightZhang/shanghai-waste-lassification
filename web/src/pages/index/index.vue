@@ -132,7 +132,6 @@ export default {
     margin: 20px;
 
     label {
-      font-size: 12px;
       display: block;
       margin-bottom: 20px;
     }
@@ -151,11 +150,10 @@ export default {
       flex-direction: row;
       margin: 3vh;
       .left-img {
-        width: 65px;
-        height: 65px;
+        width: 75px;
+        height: 75px;
       }
       .description {
-        font-size: 12px;
         display: flex;
         flex: 1;
         padding-top: 5px;
