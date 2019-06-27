@@ -66,6 +66,8 @@ export default {
   created () {
     wx.hideTabBar();
     wx.setNavigationBarTitle({ title: "查询" });
+    //获取热门垃圾
+    this.getGeneralPurposeByName();
   },
   mounted () { },
   methods: {
@@ -73,7 +75,7 @@ export default {
       this.keyWord = event.mp.detail;
       if (this.keyWord != "") {
         //调用云模糊接口
-        indexServe.getDownListByName(res => {
+        indexServe.getDownListByName({ "keyWord": this.keyWord }, res => {
           this.lists = res.data;
           if (this.lists.length > 0) {
             this.isShowSeach = true;
@@ -91,10 +93,15 @@ export default {
         this.isShowSeach = false;
         this.isShowResult = true;
         //调用查询结果接口
-        indexServe.getResultByName(res => {
+        indexServe.getResultByName({ "keyWord": this.keyWord }, res => {
           this.resultObject = res.data;
         });
       }
+    },
+    getGeneralPurposeByName () {
+      indexServe.getGeneralPurposeByName((res) => {
+        this.hots = res.data;
+      })
     }
   }
 };
