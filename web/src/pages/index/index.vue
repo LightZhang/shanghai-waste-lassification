@@ -21,7 +21,7 @@
       <label style="text-align:right;color:blue;">更多... </label>
     </div>
 
-    <resultBox :name="resultObject.name" v-if="isShowResult"></resultBox>
+    <resultBox :name="resultObject.name" :keyWord="keyWord" v-if="isShowResult"></resultBox>
 
     <div class="tip-box" v-if="!isShowResult">
       <ul>
@@ -41,26 +41,17 @@ import resultBox from "@/components/result-box";
 
 export default {
   computed: {
-    rubbishTypes: function() {
+    rubbishTypes: function () {
       return this.$store.state.rubbishTypes;
     }
   },
-  data() {
+  data () {
     return {
       keyWord: "",
       isShowSeach: false,
       isShowResult: false,
       lists: ["纸巾", "面膜", "鸡蛋", "剩饭", "剩菜"],
-      hots: [
-        "纸巾",
-        "面膜",
-        "鸡蛋",
-        "剩饭",
-        "剩菜",
-        "所料",
-        "小龙虾",
-        "玻璃瓶"
-      ],
+      hots: ["纸巾", "面膜", "鸡蛋", "剩饭", "剩菜", "所料", "小龙虾", "玻璃瓶"],
       resultObject: {
         name: "干垃圾"
       }
@@ -72,13 +63,13 @@ export default {
   },
 
   methods: {},
-  created() {
+  created () {
     wx.hideTabBar();
     wx.setNavigationBarTitle({ title: "查询" });
   },
-  mounted() {},
+  mounted () { },
   methods: {
-    change(event) {
+    change (event) {
       this.keyWord = event.mp.detail;
       if (this.keyWord != "") {
         //调用云模糊接口
@@ -94,7 +85,7 @@ export default {
         this.isShowResult = false;
       }
     },
-    confirm() {
+    confirm () {
       if (this.keyWord) {
         this.isShowSeach = false;
         this.isShowResult = true;

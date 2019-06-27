@@ -3,20 +3,20 @@
 
     <label class="seach-name">{{keyWord}}</label>
     <div class="img-box">
-      <cover-image :src="curImg" mode="scaleToFill" style="width:65px;"></cover-image>
+      <cover-image :src="rubbishType.img" mode="scaleToFill" style="width:65px;"></cover-image>
     </div>
     <div v-if="name=='干垃圾'" class="content">
-      <div class="t1">
+      <div class="stage">
         <label>{{rubbishType.name}}是指：</label>
         <p> {{rubbishType.concept}}</p>
       </div>
 
-      <div class="t2">
+      <div class="stage">
         <label>{{rubbishType.name}}主要包括</label>
         <p>{{rubbishType.text}}</p>
       </div>
 
-      <div class="t3">
+      <div class="stage">
         <label>{{rubbishType.name}}投放要求</label>
         <ul>
           <li v-for="item in  rubbishType.demand" :key="item">{{item}}</li>
@@ -36,17 +36,17 @@
 export default {
   props: ["name", "keyWord"],
   computed: {
-    rubbishType: function() {
+    rubbishType: function () {
       return this.rubbishTypes.find(p => this.name == p.name);
     },
-    rubbishTypes: function() {
+    rubbishTypes: function () {
       return this.$store.state.rubbishTypes;
     }
   },
-  data() {
+  data () {
     return {};
   },
-  mounted() {}
+  mounted () { }
 };
 </script>
 
@@ -58,26 +58,32 @@ export default {
   border: dashed 1px #000;
   border-radius: 2vh;
   text-align: center;
-  overflow: hidden;
+  overflow: auto;
 
   .seach-name {
     height: 40px;
     line-height: 40px;
     font-weight: bold;
-    background-color: rgba(255, 255, 255, 1);
+    font-size: 18px;
     width: 100%;
     display: block;
   }
 
   .content {
+    padding: 10px;
+    text-align: left;
+    .stage {
+      margin: 10px 0px;
+    }
+
     ._label {
-      text-align: left;
       font-weight: bold;
     }
   }
 
   .img-box {
     width: 65px;
+    margin-top: 10px;
     display: inline-block;
   }
 }
