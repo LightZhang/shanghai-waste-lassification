@@ -35,8 +35,7 @@
     "van-panel": "/static/vant/lib/panel/index",
     "van-field": "/static/vant/lib/field/index",
     "van-tag": "/static/vant/lib/tag/index",
-    ""
-
+    "van-search": "/static/vant/lib/search/index"
 
   },
   "sitemapLocation": "sitemap.json"
