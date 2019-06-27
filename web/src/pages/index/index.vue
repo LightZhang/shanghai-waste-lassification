@@ -17,7 +17,7 @@
 
     <div class="tag-box">
       <label>热门搜索关键字</label>
-      <van-tag type="success" plain round v-for="hot in hots" :key="hot">{{hot}}</van-tag>
+      <van-tag class="tag" type="success" plain round v-for="hot in hots" :key="hot">{{hot}}</van-tag>
       <label style="text-align:right;color:blue;">更多... </label>
     </div>
 
@@ -144,8 +144,9 @@ export default {
       display: block;
       margin-bottom: 20px;
     }
-    ._van-tag {
+    .tag {
       margin: 5px;
+      display: inline-block;
     }
   }
 
