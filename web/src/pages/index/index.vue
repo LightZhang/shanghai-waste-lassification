@@ -9,7 +9,7 @@
 
         <div class="ul-box" v-show="isShowSeach&lists.length>0">
           <ul>
-            <li class="li" v-for="item in lists" :key="item" @click="confirm">{{ item}}</li>
+            <li class="li" v-for="item in lists" :key="item" @click="confirm(item)">{{ item}}</li>
           </ul>
         </div>
       </div>
@@ -85,7 +85,8 @@ export default {
         this.isShowResult = false;
       }
     },
-    confirm () {
+    confirm (item) {
+      this.keyWord = item || this.keyWord;
       if (this.keyWord) {
         this.isShowSeach = false;
         this.isShowResult = true;
