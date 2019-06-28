@@ -21,10 +21,6 @@
       <label style="text-align:right;color:blue;">更多... </label>
     </div>
 
-    <van-popup :show="isShowResult">
-      <resultBox :name="resultObject.name" :keyWord="keyWord"></resultBox>
-    </van-popup>
-
     <div class="tip-box" v-if="!isShowResult">
       <ul>
         <li class="li" v-for="item in rubbishTypes" :key="item.name">
@@ -34,6 +30,9 @@
       </ul>
     </div>
 
+    <van-popup :show="isShowResult">
+      <resultBox :name="resultObject.name" :keyWord="keyWord"></resultBox>
+    </van-popup>
   </view>
 </template>
 

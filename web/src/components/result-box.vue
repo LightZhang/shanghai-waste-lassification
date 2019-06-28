@@ -16,12 +16,12 @@
         <p>{{rubbishType.text}}</p>
       </div>
 
-      <div class="stage">
+      <!-- <div class="stage">
         <label>{{rubbishType.name}}投放要求</label>
         <ul>
           <li v-for="item in  rubbishType.demand" :key="item">{{item}}</li>
         </ul>
-      </div>
+      </div> -->
 
     </div>
   </div>
@@ -48,7 +48,6 @@ export default {
 <style lang="less" scoped>
 .result-box {
   width: 80vw;
-  height: 60vh;
   text-align: center;
   overflow: auto;
 
