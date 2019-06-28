@@ -49,9 +49,6 @@ export default {
 .result-box {
   width: 80vw;
   height: 60vh;
-  margin: 0 auto;
-  border: dashed 1px #000;
-  border-radius: 2vh;
   text-align: center;
   overflow: auto;
 

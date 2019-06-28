@@ -21,7 +21,9 @@
       <label style="text-align:right;color:blue;">更多... </label>
     </div>
 
-    <resultBox :name="resultObject.name" :keyWord="keyWord" v-if="isShowResult"></resultBox>
+    <van-popup :show="isShowResult">
+      <resultBox :name="resultObject.name" :keyWord="keyWord"></resultBox>
+    </van-popup>
 
     <div class="tip-box" v-if="!isShowResult">
       <ul>
@@ -76,7 +78,7 @@ export default {
       if (this.keyWord != "") {
         //调用云模糊接口
         indexServe.getDownListByName({ "keyWord": this.keyWord }, res => {
-          this.lists = res.data;
+          this.lists = res.result;
           if (this.lists.length > 0) {
             this.isShowSeach = true;
             this.isShowResult = false;
@@ -94,13 +96,13 @@ export default {
         this.isShowResult = true;
         //调用查询结果接口
         indexServe.getResultByName({ "keyWord": this.keyWord }, res => {
-          this.resultObject = res.data;
+          this.resultObject = res.result;
         });
       }
     },
     getGeneralPurposeByName () {
       indexServe.getGeneralPurposeByName((res) => {
-        this.hots = res.data;
+        this.hots = res.result;
       })
     }
   }
