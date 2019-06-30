@@ -37,7 +37,8 @@
     "van-tag": "/static/vant/lib/tag/index",
     "van-search": "/static/vant/lib/search/index",
     "van-popup":"/static/vant/lib/popup/index",
-    "van-dialog":"/static/vant/lib/dialog/index"
+    "van-dialog":"/static/vant/lib/dialog/index",
+    "van-toast": "/static/vant/lib/toast/index"
 
   },
   "sitemapLocation": "sitemap.json"

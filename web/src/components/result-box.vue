@@ -1,14 +1,13 @@
 <template>
   <div class="result-box" v-if="rubbishType">
-
-    <label class="seach-name">{{keyWord}}</label>
+    <label class="seach-name">{{name}}</label>
     <div class="img-box">
       <cover-image :src="rubbishType.img" mode="scaleToFill" style="width:65px;"></cover-image>
     </div>
     <div class="content">
       <div class="stage">
         <label>{{rubbishType.name}}是指：</label>
-        <p> {{rubbishType.concept}}</p>
+        <p>{{rubbishType.concept}}</p>
       </div>
 
       <div class="stage">
@@ -21,33 +20,33 @@
         <ul>
           <li v-for="item in  rubbishType.demand" :key="item">{{item}}</li>
         </ul>
-      </div> -->
-
+      </div>-->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["name", "keyWord"],
+  props: ["name", "type"],
   computed: {
-    rubbishType: function () {
-      return this.rubbishTypes.find(p => this.name == p.name);
+    rubbishType: function() {
+      return this.rubbishTypes.find(p => this.type == p.name);
     },
-    rubbishTypes: function () {
+    rubbishTypes: function() {
       return this.$store.state.rubbishTypes;
     }
   },
-  data () {
+  data() {
     return {};
   },
-  mounted () { }
+  mounted() {}
 };
 </script>
 
 <style lang="less" scoped>
 .result-box {
   width: 80vw;
+  margin: 0 auto;
   text-align: center;
   overflow: auto;
 
