@@ -1,8 +1,8 @@
 <template>
   <div class="result-box" v-if="rubbishType">
-    <label class="seach-name">{{name}}</label>
+    <label class="seach-name">{{type}}</label>
     <div class="img-box">
-      <cover-image :src="rubbishType.img" mode="scaleToFill" style="width:65px;"></cover-image>
+      <cover-image :src="rubbishType.img" mode="scaleToFill"></cover-image>
     </div>
     <div class="content">
       <div class="stage">
@@ -46,9 +46,12 @@ export default {
 <style lang="less" scoped>
 .result-box {
   width: 80vw;
-  margin: 0 auto;
   text-align: center;
   overflow: auto;
+  margin: 0 auto;
+  border-radius: 5px;
+  background-color: #ffffff;
+  margin-top: 30vh;
 
   .seach-name {
     height: 40px;
@@ -72,8 +75,8 @@ export default {
   }
 
   .img-box {
-    width: 65px;
-    margin-top: 10px;
+    width: 75px;
+    margin-top: 5px;
     display: inline-block;
   }
 }

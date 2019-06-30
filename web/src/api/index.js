@@ -7,6 +7,7 @@ class IndexServe {
   //基礎 接口
   getWxCloudBack(name, data, callback) {
     data = data || {};
+
     wx.cloud
       .callFunction({
         name: name,
@@ -29,7 +30,7 @@ class IndexServe {
   //获取当前 名称具体的分类
   getResultByName({ keyWord }, callback) {
 
-    this.getWxCloudBack("search", { name: keyWord },callback);
+    this.getWxCloudBack("search", { name: keyWord }, callback);
   }
 
   //获取常见垃圾名称

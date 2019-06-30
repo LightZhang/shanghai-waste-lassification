@@ -4,10 +4,10 @@
       <div>
         <van-field v-model="keyWord" placeholder="请输入关键字，拼音缩写" @change="change">
           <div id="panel-warp"></div>
-          <van-button slot="button" size="small" type="primary" @click="confirm()">查询</van-button>
+          <van-button slot="button" size="small" type="primary" @click="confirm(keyWord)">查询</van-button>
         </van-field>
 
-        <div class="ul-box" v-show="isShowSeach&lists.length>0">
+        <div class="ul-box" v-show="isShowSeach">
           <ul>
             <li class="li" v-for="item in lists" :key="item._id" @click="confirm(item.name)">
               {{ item.name}}
@@ -41,8 +41,8 @@
       </ul>
     </div>
 
-    <div>
-      <resultBox v-show="isShowResult" :name="resultObject.name" :type="resultObject.type"></resultBox>
+    <div class="result-mask" v-if="isShowResult" @click="isShowResult=false">
+      <resultBox :name="resultObject.name" :type="resultObject.type"></resultBox>
     </div>
 
     <van-toast id="van-toast" />
@@ -89,21 +89,21 @@ export default {
   methods: {},
   created() {
     wx.hideTabBar();
-    wx.setNavigationBarTitle({ title: "查询" });
+  },
+  mounted() {
+    wx.hideTabBar();
+
     //获取热门垃圾
     this.getGeneralPurposeByName();
   },
-  mounted() {},
   methods: {
     change(event) {
-      this.keyWord = event.mp.detail;
-      if (this.keyWord != "") {
+      if (event.mp.detail != "") {
         //调用云模糊接口
-        indexServe.getDownListByName({ keyWord: this.keyWord }, res => {
+        indexServe.getDownListByName({ keyWord: event.mp.detail }, res => {
           this.lists = res.result;
           if (this.lists.length > 0) {
             this.isShowSeach = true;
-            this.isShowResult = false;
           }
         });
       } else {
@@ -112,14 +112,15 @@ export default {
       }
     },
     confirm(item) {
+      let keyWord = this.keyWord;
       if (item) {
-        this.keyWord = item;
+        keyWord = item;
       }
 
-      if (this.keyWord) {
+      if (keyWord) {
         //调用查询结果接口
         this.isShowSeach = false;
-        indexServe.getResultByName({ keyWord: this.keyWord }, res => {
+        indexServe.getResultByName({ keyWord: keyWord }, res => {
           if (res.result.length > 0) {
             this.isShowResult = true;
             this.resultObject = res.result[0];
@@ -141,6 +142,15 @@ export default {
 <style lang="less" scoped>
 .index {
   padding: 5px;
+
+  .result-mask {
+    background-color: rgba(0, 0, 0, 0.7);
+    top: 0px;
+    left: 0px;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+  }
 
   .ul-box {
     background-color: rgba(255, 255, 255, 1);
