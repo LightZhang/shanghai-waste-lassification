@@ -64,17 +64,8 @@ export default {
       keyWord: "",
       isShowSeach: false,
       isShowResult: false,
-      lists: ["纸巾", "面膜", "鸡蛋", "剩饭", "剩菜"],
-      hots: [
-        "纸巾",
-        "面膜",
-        "鸡蛋",
-        "剩饭",
-        "剩菜",
-        "所料",
-        "小龙虾",
-        "玻璃瓶"
-      ],
+      lists: [],
+      hots: ["香蕉", "塑料", "鸡蛋", "剩饭", "剩菜", "小龙虾", "玻璃瓶"],
       resultObject: {
         name: "",
         type: "干垃圾"
@@ -133,7 +124,9 @@ export default {
     },
     getGeneralPurposeByName() {
       indexServe.getGeneralPurposeByName(res => {
-        this.hots = res.result;
+        this.hots = res.result.map(p => {
+          return p.name;
+        });
       });
     }
   }
