@@ -1,75 +1,105 @@
 // 云函数入口文件
+
 const cloud = require('wx-server-sdk')
 cloud.init()
 const db = cloud.database()
-const MAX_LIMIT = 10
+
 const wasteDb = db.collection('_waste')
 const userDb = db.collection('_user')
+const notIncluded = db.collection('_notIncluded')
+
+const Unit = require('./unit')
 
 // 根据用户输入查询数据库数据
 exports.main = async (event, context) => {
-    try{
-      let resData = { code: Number, message: String, data: []}
-      let hotId
-      let hotNum
-      //返回经过热度排序的数据库记录
-      let sData = await wasteDb.where({name:event.name}).limit(1).get()//精确匹配的数据
-      
-      //模糊匹配的数据
-      let fuzzyData = await wasteDb.where(
-        {
-          name: db.RegExp({ regexp: event.name })
-        }
-      ).orderBy('hot', 'desc')
-      .limit(MAX_LIMIT).get()
-
-      if(sData.data.length>0 && fuzzyData.data.length>0){
-        resData.code = 1
-        resData.message = '查询结果'
-        hotId = sData.data[0]._id
-        hotNum = sData.data[0].hot
-        resData.data.push(sData.data[0])
-        fuzzyData.data.forEach(d=>{
-          if(d._id != sData.data[0]._id){
-            resData.data.push(d)
-          }
-        })
-      }
-      else if (sData.data.length == 0 && fuzzyData.data.length > 0){
-        resData.code = 1
-        resData.message = '查询结果'
-        resData.data = fuzzyData.data
-      }
-      else{
-        resData.code = -1
-        resData.message = '暂无数据'
-      }
-
-      //保存用户openid信息,出于性能考虑使用异步方式
-      let { OPENID, APPID } = cloud.getWXContext()
-      userDb.add({data:{ appId: APPID, openId: OPENID, input: event.name },
-          success: function (res) {
-            console.log(res)
-          },
-          fail: console.error
-      }
-     )
-
-      //更新搜索过得数据热度（精确查找）
-      wasteDb.doc(hotId).update({
-        data:{hot:hotNum+1},
-        success:function(res){
-          console.log(res)
-        },
-        fail:console.error
-      })
-
-      return resData
+  console.log("actionName:" + event.action);
+  switch (event.action) {
+    case 'getDownListByName': {
+      return await getDownListByName(event)
     }
-  catch(e){
-    console.error(e)
-    resData.code=-1
-    resData.message='查询失败'
-    return resData
+    case 'getResultByName': {
+      return await getResultByName(event)
+    }
+    case 'getGeneralPurposeByName': {
+      return await getGeneralPurposeByName(event)
+    }
+    default: {
+      return
+    }
+  }
+
+  //下拉模糊
+  async function getDownListByName(event) {
+
+    let res = await wasteDb.where({
+      name: db.RegExp({ regexp: event.name })
+    }).orderBy('hot', 'desc').limit(50).get();
+
+    if (res.errMsg == 'collection.get:ok') {
+      return Unit.success(res.data);
+    }
+    else {
+      return Unit.fail('未查询到结果！' + res.errMsg);
+    }
+
+  }
+
+
+  //精确搜索
+  async function getResultByName(event) {
+    let res = await wasteDb.where({ name: event.name }).limit(1).get();//精确匹配的数据
+    if (res.errMsg == 'collection.get:ok') {
+      await updateHot(res.data[0]._id);
+      await saveSeachInfo(event.name);
+      return Unit.success(res.data);
+    }
+    else {
+      await addNotIncluded(event.name);
+      return Unit.fail('未查询到结果！' + res.errMsg);
+    }
+
+  }
+
+
+
+  //常用垃圾
+  async function getGeneralPurposeByName(event) {
+
+    let res = await wasteDb.orderBy('hot', 'desc').limit(20).get();
+    if (res.errMsg == 'collection.get:ok') {
+      return Unit.success(res.data);
+    }
+    else {
+      return Unit.fail('未查询到结果！' + res.errMsg);
+    }
+  }
+
+  //更新热点数据
+  async function updateHot(id) {
+    console.log(id)
+    let item = wasteDb.doc(id)
+    let doc = await item.get();
+    console.log(doc);
+    let hotNum = doc.data.hot || 0;
+    await item.update({
+      data: { hot: hotNum + 1 }
+    });
+  }
+
+  //不在数据库的垃圾
+  async function addNotIncluded(name) {
+    let { OPENID, APPID } = cloud.getWXContext()
+    await notIncluded.add({ data: { openId: OPENID, name: id } });
+
+  }
+
+
+  //保存搜索用户信息
+  async function saveSeachInfo(event) {
+    //保存用户openid信息,出于性能考虑使用异步方式
+    let { OPENID, APPID } = cloud.getWXContext();
+    await userDb.add({
+      data: { appId: APPID, openId: OPENID, name: event.name }
+    })
   }
 }

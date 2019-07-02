@@ -2,7 +2,7 @@
   <view class="index">
     <van-panel>
       <div>
-        <van-field v-model="keyWord" placeholder="请输入关键字，拼音缩写" @change="change">
+        <van-field placeholder="请输入关键字，拼音缩写" @change="change">
           <div id="panel-warp"></div>
           <van-button slot="button" size="small" type="primary" @click="confirm(keyWord)">查询</van-button>
         </van-field>
@@ -90,9 +90,10 @@ export default {
   methods: {
     change(event) {
       if (event.mp.detail != "") {
+        this.keyWord = event.mp.detail;
         //调用云模糊接口
         indexServe.getDownListByName({ keyWord: event.mp.detail }, res => {
-          this.lists = res.result;
+          this.lists = res.data;
           if (this.lists.length > 0) {
             this.isShowSeach = true;
           }
@@ -112,9 +113,9 @@ export default {
         //调用查询结果接口
         this.isShowSeach = false;
         indexServe.getResultByName({ keyWord: keyWord }, res => {
-          if (res.result.length > 0) {
+          if (res.data.length > 0) {
             this.isShowResult = true;
-            this.resultObject = res.result[0];
+            this.resultObject = res.data[0];
           } else {
             Toast("未查询到当前垃圾");
             this.isShowResult = false;
@@ -124,7 +125,7 @@ export default {
     },
     getGeneralPurposeByName() {
       indexServe.getGeneralPurposeByName(res => {
-        this.hots = res.result.map(p => {
+        this.hots = res.data.map(p => {
           return p.name;
         });
       });
