@@ -2,7 +2,7 @@
   <view class="index">
     <van-panel>
       <div>
-        <van-field placeholder="请输入关键字，拼音缩写" @change="change">
+        <van-field placeholder="请输入关键字" @change="change">
           <div id="panel-warp"></div>
           <van-button slot="button" size="small" type="primary" @click="confirm(keyWord)">查询</van-button>
         </van-field>
@@ -29,7 +29,7 @@
         :key="hot"
         @click="confirm(hot)"
       >{{hot}}</van-tag>
-      <label style="text-align:right;color:blue;">更多...</label>
+      <!-- <label style="text-align:right;color:blue;">更多...</label> -->
     </div>
 
     <div class="tip-box" v-if="!isShowResult">
@@ -65,7 +65,7 @@ export default {
       isShowSeach: false,
       isShowResult: false,
       lists: [],
-      hots: ["香蕉", "塑料", "鸡蛋", "剩饭", "剩菜", "小龙虾", "玻璃瓶"],
+      hots: [],
       resultObject: {
         name: "",
         type: "干垃圾"
@@ -83,7 +83,6 @@ export default {
   },
   mounted() {
     wx.hideTabBar();
-
     //获取热门垃圾
     this.getGeneralPurposeByName();
   },
@@ -124,7 +123,7 @@ export default {
       }
     },
     getGeneralPurposeByName() {
-      indexServe.getGeneralPurposeByName(res => {
+      indexServe.getGeneralPurposeByName({}, res => {
         this.hots = res.data.map(p => {
           return p.name;
         });

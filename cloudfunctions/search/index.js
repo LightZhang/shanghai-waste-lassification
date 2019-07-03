@@ -35,7 +35,7 @@ exports.main = async (event, context) => {
       name: db.RegExp({ regexp: event.name })
     }).orderBy('hot', 'desc').limit(50).get();
 
-    if (res.errMsg == 'collection.get:ok') {
+    if (res.data && res.data.length > 0) {
       return Unit.success(res.data);
     }
     else {
@@ -48,14 +48,15 @@ exports.main = async (event, context) => {
   //精确搜索
   async function getResultByName(event) {
     let res = await wasteDb.where({ name: event.name }).limit(1).get();//精确匹配的数据
-    if (res.errMsg == 'collection.get:ok') {
+    console.log(res);
+    if (res.data && res.data.length > 0) {
       await updateHot(res.data[0]._id);
       await saveSeachInfo(event.name);
       return Unit.success(res.data);
     }
     else {
       await addNotIncluded(event.name);
-      return Unit.fail('未查询到结果！' + res.errMsg);
+      return Unit.fail('未查询到结果！');
     }
 
   }
@@ -65,8 +66,8 @@ exports.main = async (event, context) => {
   //常用垃圾
   async function getGeneralPurposeByName(event) {
 
-    let res = await wasteDb.orderBy('hot', 'desc').limit(20).get();
-    if (res.errMsg == 'collection.get:ok') {
+    let res = await wasteDb.orderBy('hot', 'desc').limit(14).get();
+    if (res.data && res.data.length > 0) {
       return Unit.success(res.data);
     }
     else {
@@ -89,7 +90,7 @@ exports.main = async (event, context) => {
   //不在数据库的垃圾
   async function addNotIncluded(name) {
     let { OPENID, APPID } = cloud.getWXContext()
-    await notIncluded.add({ data: { openId: OPENID, name: id } });
+    await notIncluded.add({ data: { openId: OPENID, name: name } });
 
   }
 

@@ -1,6 +1,6 @@
 <template>
   <div class="result-box" v-if="rubbishType">
-    <label class="seach-name">{{type}}</label>
+    <label class="seach-name">{{'“'+name+'” 是'+type}}</label>
     <div class="img-box">
       <cover-image :src="rubbishType.img" mode="scaleToFill"></cover-image>
     </div>
@@ -52,6 +52,7 @@ export default {
   border-radius: 5px;
   background-color: #ffffff;
   margin-top: 30vh;
+  padding-top: 20px;
 
   .seach-name {
     height: 40px;
